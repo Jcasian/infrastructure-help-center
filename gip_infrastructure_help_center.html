@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Infrastructure Help Center — GIP Networks</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --navy:#0a1628;--navy2:#12234a;--accent:#1d6ae5;--accent2:#0f4bbf;
+    --teal:#0ea5a0;--green:#16a34a;--amber:#d97706;--red:#dc2626;
+    --surface:#f4f6fb;--card:#ffffff;--border:#e2e8f0;
+    --text1:#0f172a;--text2:#475569;--text3:#94a3b8;
+    --font:'DM Sans',sans-serif;--mono:'DM Mono',monospace;
+  }
+  html{height:auto}
+  body{min-height:100%;font-family:var(--font);background:var(--surface);color:var(--text1)}
+  a{color:inherit;text-decoration:none}
+
+  /* HEADER */
+  .header{background:linear-gradient(135deg,#0a1628 0%,#12234a 60%,#1a3a6e 100%);padding:2rem 2.5rem 1.5rem;position:relative;overflow:hidden}
+  .header::before{content:'';position:absolute;top:-80px;right:-80px;width:280px;height:280px;border-radius:50%;background:rgba(29,106,229,0.12);pointer-events:none}
+  .header::after{content:'';position:absolute;bottom:-60px;left:30%;width:180px;height:180px;border-radius:50%;background:rgba(14,165,160,0.08);pointer-events:none}
+  .header-top{display:flex;align-items:center;gap:14px;margin-bottom:0.75rem}
+  .logo-badge{width:44px;height:44px;background:var(--accent);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;box-shadow:0 4px 16px rgba(29,106,229,0.4)}
+  .header h1{font-size:22px;font-weight:600;color:#fff;letter-spacing:-0.3px}
+  .header p{font-size:13px;color:#94a3b8;margin-top:2px}
+  .search-bar{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,0.09);border:1px solid rgba(255,255,255,0.16);border-radius:12px;padding:10px 16px;margin-top:1.25rem;cursor:text;max-width:600px;transition:border-color 0.15s}
+  .search-bar:focus-within{border-color:rgba(255,255,255,0.35);background:rgba(255,255,255,0.12)}
+  .search-bar input{background:none;border:none;outline:none;color:#fff;font-family:var(--font);font-size:14px;flex:1}
+  .search-bar input::placeholder{color:#94a3b8}
+
+  /* TABS */
+  .tabs-wrapper{background:#fff;border-bottom:1px solid var(--border)}
+  .tabs{display:flex;gap:4px;padding:0.75rem 2.5rem 0;overflow-x:auto;scrollbar-width:none;max-width:1200px}
+  .tabs::-webkit-scrollbar{display:none}
+  .tab{padding:9px 18px;border-radius:8px 8px 0 0;font-size:13px;font-weight:500;color:var(--text2);cursor:pointer;border:1px solid transparent;border-bottom:none;white-space:nowrap;transition:all 0.15s;flex-shrink:0;user-select:none}
+  .tab:hover{background:var(--surface);color:var(--text1)}
+  .tab.active{background:#fff;border-color:var(--border);color:var(--accent);position:relative}
+  .tab.active::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:2px;background:#fff}
+
+  /* STATS BAR */
+  .stats-bar{background:#fff;border-bottom:1px solid var(--border);padding:10px 2.5rem;display:flex;gap:24px;align-items:center}
+  .stat-item{font-size:12px;color:var(--text3);display:flex;align-items:center;gap:5px}
+  .stat-item strong{font-size:13px;font-weight:600;color:var(--text2)}
+  .stat-dot{width:6px;height:6px;border-radius:50%}
+
+  /* CONTENT */
+  .content{padding:2rem 2.5rem;max-width:1200px}
+  .section-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:12px}
+  .task-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 16px;transition:box-shadow 0.15s,border-color 0.15s}
+  .task-card:hover{box-shadow:0 4px 20px rgba(29,106,229,0.09);border-color:#bdd1f5}
+  .task-card-title{font-size:14px;font-weight:500;color:var(--text1);margin-bottom:10px;line-height:1.45}
+  .task-links{display:flex;gap:8px;flex-wrap:wrap}
+
+  .btn-steps,.btn-video,.btn-link{
+    padding:5px 12px;border-radius:7px;font-size:12px;font-weight:500;
+    cursor:pointer;display:inline-flex;align-items:center;gap:5px;
+    transition:all 0.12s;font-family:var(--font);text-decoration:none;background:none;border:1px solid
+  }
+  .btn-steps{border-color:var(--accent);color:var(--accent)}
+  .btn-steps:hover{background:var(--accent);color:#fff}
+  .btn-video{border-color:var(--teal);color:var(--teal)}
+  .btn-video:hover{background:var(--teal);color:#fff}
+  .btn-link{border-color:var(--green);color:var(--green)}
+  .btn-link:hover{background:var(--green);color:#fff}
+
+  .cat-section{margin-bottom:2.5rem}
+  .cat-header{display:flex;align-items:center;gap:10px;margin-bottom:1rem}
+  .cat-icon{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0}
+  .cat-label{font-size:16px;font-weight:600;color:var(--text1)}
+  .cat-count{font-size:12px;color:var(--text3);background:var(--surface);padding:2px 9px;border-radius:20px;border:1px solid var(--border)}
+  .badge-coming{font-size:11px;color:var(--amber);background:#fef3c7;padding:2px 7px;border-radius:5px;margin-left:6px;vertical-align:middle;font-weight:500}
+
+  .empty-state{text-align:center;padding:4rem 1rem;color:var(--text3);font-size:14px}
+  .empty-state .icon{font-size:40px;margin-bottom:12px}
+
+  /* AI PANEL */
+  .ai-panel{position:fixed;bottom:24px;right:24px;z-index:1000;display:flex;flex-direction:column;align-items:flex-end;gap:12px}
+  .ai-toggle{width:54px;height:54px;border-radius:50%;background:var(--accent);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 24px rgba(29,106,229,0.4);transition:transform 0.15s,box-shadow 0.15s}
+  .ai-toggle:hover{transform:scale(1.08);box-shadow:0 6px 28px rgba(29,106,229,0.5)}
+  .ai-toggle-label{position:absolute;right:62px;background:var(--navy);color:#fff;font-size:12px;font-weight:500;padding:5px 10px;border-radius:8px;white-space:nowrap;pointer-events:none;opacity:0;transition:opacity 0.15s}
+  .ai-toggle:hover .ai-toggle-label{opacity:1}
+
+  .ai-chat{width:360px;background:#fff;border:1px solid var(--border);border-radius:18px;box-shadow:0 12px 40px rgba(0,0,0,0.14);display:none;flex-direction:column;overflow:hidden;max-height:520px}
+  .ai-chat.open{display:flex;animation:slideUp 0.2s ease}
+  @keyframes slideUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+
+  .ai-head{background:linear-gradient(135deg,#0a1628,#1a3a6e);padding:16px 18px;display:flex;align-items:center;justify-content:space-between}
+  .ai-head-left{display:flex;align-items:center;gap:10px}
+  .ai-avatar{width:36px;height:36px;border-radius:50%;background:rgba(29,106,229,0.3);border:1.5px solid rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;font-size:16px}
+  .ai-dot{width:8px;height:8px;border-radius:50%;background:#22c55e;animation:pulse 2s infinite;flex-shrink:0}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
+  .ai-head-title{font-size:14px;font-weight:600;color:#fff}
+  .ai-head-sub{font-size:11px;color:#94a3b8;margin-top:1px}
+  .ai-close{background:none;border:none;cursor:pointer;color:#94a3b8;font-size:20px;line-height:1;padding:2px;transition:color 0.12s}
+  .ai-close:hover{color:#fff}
+
+  .ai-messages{flex:1;overflow-y:auto;padding:16px 18px;display:flex;flex-direction:column;gap:10px;min-height:220px}
+  .ai-messages::-webkit-scrollbar{width:4px}
+  .ai-messages::-webkit-scrollbar-track{background:transparent}
+  .ai-messages::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+
+  .msg{max-width:88%;padding:10px 14px;border-radius:14px;font-size:13px;line-height:1.55}
+  .msg.bot{background:var(--surface);color:var(--text1);align-self:flex-start;border-bottom-left-radius:4px}
+  .msg.user{background:var(--accent);color:#fff;align-self:flex-end;border-bottom-right-radius:4px}
+  .msg.typing{color:var(--text3);font-style:italic;background:var(--surface);align-self:flex-start}
+
+  .ai-suggestions{display:flex;flex-wrap:wrap;gap:6px;padding:0 18px 12px}
+  .ai-suggestion{padding:5px 11px;border-radius:20px;background:var(--surface);border:1px solid var(--border);font-size:12px;color:var(--text2);cursor:pointer;transition:all 0.12s;font-family:var(--font)}
+  .ai-suggestion:hover{background:#e8effd;border-color:#bdd1f5;color:var(--accent)}
+
+  .ai-input-row{display:flex;gap:8px;padding:12px 16px;border-top:1px solid var(--border);align-items:center}
+  .ai-input{flex:1;padding:9px 13px;border:1px solid var(--border);border-radius:10px;font-family:var(--font);font-size:13px;outline:none;color:var(--text1);background:#fff;transition:border-color 0.12s}
+  .ai-input:focus{border-color:var(--accent)}
+  .ai-send{width:36px;height:36px;border-radius:9px;background:var(--accent);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background 0.12s}
+  .ai-send:hover{background:var(--accent2)}
+
+  /* FOOTER */
+  footer{padding:1.5rem 2.5rem;border-top:1px solid var(--border);background:#fff;color:var(--text3);font-size:12px;display:flex;justify-content:space-between;align-items:center;flex-wrap:gap}
+  footer a{color:var(--accent);text-decoration:none}
+  footer a:hover{text-decoration:underline}
+
+  @media(max-width:640px){
+    .header,.content,.tabs,.stats-bar,footer{padding-left:1rem;padding-right:1rem}
+    .ai-chat{width:calc(100vw - 32px)}
+    .ai-panel{right:12px;bottom:12px}
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-top">
+    <div class="logo-badge">🏗️</div>
+    <div>
+      <h1>Infrastructure Help Center</h1>
+      <p>GIP Networks &mdash; Step-by-step support for every task</p>
+    </div>
+  </div>
+  <div class="search-bar" onclick="document.getElementById('search-input').focus()">
+    <svg width="16" height="16" fill="none" stroke="white" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+    <input id="search-input" placeholder="Search procedures, tasks, guides…" oninput="filterCards(this.value)" autocomplete="off">
+  </div>
+</div>
+
+<div class="tabs-wrapper">
+  <div class="tabs" id="tabs">
+    <div class="tab active" onclick="switchTab('all',this)">All Tasks</div>
+    <div class="tab" onclick="switchTab('ubersmith',this)">🎫 Ubersmith</div>
+    <div class="tab" onclick="switchTab('facilities',this)">🏢 Facilities</div>
+    <div class="tab" onclick="switchTab('noc',this)">📡 NOC Dashboard</div>
+    <div class="tab" onclick="switchTab('hostbill',this)">☁️ HostBill / CloudKey</div>
+  </div>
+</div>
+
+<div class="stats-bar" id="statsBar">
+  <div class="stat-item"><div class="stat-dot" style="background:#1d6ae5"></div><strong id="stat-total">0</strong> total tasks</div>
+  <div class="stat-item"><div class="stat-dot" style="background:#22c55e"></div><strong id="stat-ready">0</strong> with guides</div>
+  <div class="stat-item"><div class="stat-dot" style="background:#d97706"></div><strong id="stat-soon">0</strong> coming soon</div>
+</div>
+
+<div class="content" id="content"></div>
+
+<footer>
+  <span>GIP Networks &mdash; Infrastructure Department</span>
+  <span>AI Assistant powered by <a href="https://anthropic.com" target="_blank">Claude</a></span>
+</footer>
+
+<!-- AI ASSISTANT -->
+<div class="ai-panel">
+  <div class="ai-chat" id="aiChat">
+    <div class="ai-head">
+      <div class="ai-head-left">
+        <div class="ai-avatar">🤖</div>
+        <div>
+          <div class="ai-head-title">Infrastructure Assistant</div>
+          <div style="display:flex;align-items:center;gap:5px;margin-top:2px">
+            <div class="ai-dot"></div>
+            <div class="ai-head-sub">Powered by Claude AI</div>
+          </div>
+        </div>
+      </div>
+      <button class="ai-close" onclick="toggleChat()">✕</button>
+    </div>
+    <div class="ai-messages" id="aiMessages">
+      <div class="msg bot">Hi! I'm your Infrastructure Assistant. Ask me anything about Ubersmith tickets, facilities tasks, NOC procedures, or CloudKey/HostBill guides. 👋</div>
+    </div>
+    <div class="ai-suggestions" id="aiSuggestions">
+      <div class="ai-suggestion" onclick="askSuggestion(this)">How do I open a ticket?</div>
+      <div class="ai-suggestion" onclick="askSuggestion(this)">Reset CRAC unit</div>
+      <div class="ai-suggestion" onclick="askSuggestion(this)">Level 1 escalation</div>
+      <div class="ai-suggestion" onclick="askSuggestion(this)">Add a VM user</div>
+    </div>
+    <div class="ai-input-row">
+      <input class="ai-input" id="aiInput" placeholder="Ask a question…" onkeydown="if(event.key==='Enter')sendMsg()">
+      <button class="ai-send" onclick="sendMsg()" title="Send">
+        <svg width="16" height="16" fill="none" stroke="white" stroke-width="2" viewBox="0 0 24 24"><path d="M22 2L11 13"/><path d="M22 2L15 22 11 13 2 9l20-7z"/></svg>
+      </button>
+    </div>
+  </div>
+  <button class="ai-toggle" onclick="toggleChat()" title="Ask AI Assistant">
+    <svg width="24" height="24" fill="none" stroke="white" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+  </button>
+</div>
+
+<script>
+const DATA = {
+  ubersmith:[
+    {title:"Opening an Internal Ticket",steps:"https://scribehow.com/viewer/How_to_Submit_an_Internal_Support_Ticket_in_Ubersmith__lDPtOiYJTy6zuiPjNzg_TQ",video:"https://scribehow.com/embed/Opening_an_Internal_Ticket__lDPtOiYJTy6zuiPjNzg_TQ?as=video"},
+    {title:"Opening an External Ticket",steps:"https://scribehow.com/viewer/How_to_Submit_a_External_Support_Ticket_in_Ubersmith__3zpoM3YMSpumJfaOdpOMQQ",video:"https://scribehow.com/embed/How_to_Submit_a_External_Support_Ticket_in_Ubersmith__3zpoM3YMSpumJfaOdpOMQQ?as=video"},
+    {title:"Modifying Tickets",steps:"https://scribehow.com/viewer/How_to_Edit_a_Support_Ticket__0M4L5CY7QdW9RG1NPhO73w",video:"https://scribehow.com/embed/Modifying_a_Support_Ticket__0M4L5CY7QdW9RG1NPhO73w?as=video"},
+    {title:"Updating Tickets",steps:"https://scribehow.com/viewer/Updating_Support_Ticket_in_Ubersmith__sCEJu9KJT1uOjqWEQCtQyg",video:"https://scribehow.com/embed/How_to_Update_a_Support_Ticket_in_Ubersmith__sCEJu9KJT1uOjqWEQCtQyg?as=video"},
+    {title:"Bandwidth Usage Report / Graph",steps:"https://scribehow.com/viewer/Bandwidth_Usage_report_or_graph_request__aBpy2fHoRpS2PcGu2686tQ",video:"https://scribehow.com/embed/Bandwidth_Usage_report_or_graph_request__aBpy2fHoRpS2PcGu2686tQ?as=video"},
+    {title:"Adding New Contact to Authorized Contact List",steps:"https://scribehow.com/viewer/How_to_Add_a_Contact_in_Client_Profile__grqtixjDRf2CfoQa_IwXxQ",video:"https://scribehow.com/embed/How_to_Add_a_Contact_in_Client_Profile__grqtixjDRf2CfoQa_IwXxQ?as=video"},
+    {title:"Removing Person from Authorized Contact List",steps:"https://scribehow.com/viewer/Removing_a_person_from_the_Authorized_Contact_list_in_Ubersmith__mlsqDl5vSfS6hK-LwjEWBQ",video:"https://scribehow.com/embed/Removing_a_person_from_the_Authorized_Contact_list__mlsqDl5vSfS6hK-LwjEWBQ?as=video"},
+    {title:"How to Fill Out Billable Template",steps:"https://scribehow.com/viewer/How_to_fill_out_Billable_template_for_ticket__afUlMSabQ-CcXaM72w-sSA",video:"https://scribehow.com/embed/How_to_fill_out_Billable_template_for_ticket__afUlMSabQ-CcXaM72w-sSA?as=video"},
+    {title:"Phishing Complaint Ticket Process",steps:"https://scribehow.com/viewer/How_to_Submit_an_Internal_Support_Ticket_in_Ubersmith__lDPtOiYJTy6zuiPjNzg_TQ",video:null,soon:true},
+    {title:"Storage Packages Audit",steps:null,video:null,soon:true},
+    {title:"Opening Walkthrough Ticket",steps:null,video:null,soon:true},
+    {title:"Linking Tickets",steps:null,video:null,soon:true},
+    {title:"Merging Tickets",steps:null,video:null,soon:true},
+    {title:"Opening Combustible Risk Ticket",steps:null,video:null,soon:true},
+    {title:"Customer Requests Data Center Visit Logs",steps:null,video:null,soon:true},
+  ],
+  facilities:[
+    {title:"Resetting CRAC Compressor Units",steps:"https://scribehow.com/viewer/How_to_Submit_an_Internal_Support_Ticket_in_Ubersmith__lDPtOiYJTy6zuiPjNzg_TQ",video:"https://youtu.be/tEZifFyrIUo"},
+    {title:"Resetting CRAC Compressor Units 14, 21, 22",steps:null,video:null,soon:true},
+    {title:"Generator Test",steps:null,video:null,soon:true},
+    {title:"Checking UPS Logs",steps:null,video:null,soon:true},
+    {title:"Checking ATS Status",steps:null,video:null,soon:true},
+    {title:"Power Audit",steps:null,video:null,soon:true},
+    {title:"Running CrossConnect",steps:null,video:null,soon:true},
+    {title:"Cabinet Install",steps:null,video:null,soon:true},
+    {title:"Cabinet Reclaim",steps:null,video:null,soon:true},
+    {title:"Fiber Runs Between Ph1 and Ph3",steps:null,video:null,soon:true},
+    {title:"Check In / Out",steps:"https://scribehow.com/viewer/Checking_CustomersVisitors_and_Vendors_InOut_of_Data_Center__VQ1jaXy0R9WY_DO1jDNi3w",video:"https://scribehow.com/embed/Checking_CustomersVisitors_and_Vendors_InOut_of_Data_Center__VQ1jaXy0R9WY_DO1jDNi3w?as=video"},
+    {title:"Reserve Conference Room",steps:"https://scribehow.com/viewer/How_to_add_a_new_Conference_Room_Reservation__aZYLh-S7T4iyEIsDzL4pVw",video:"https://scribehow.com/embed/How_to_add_a_new_Conference_Room_Reservation__aZYLh-S7T4iyEIsDzL4pVw?as=video"},
+    {title:"Equipment Removal",steps:null,video:null,soon:true},
+    {title:"Generator Log Entry",steps:null,video:null,soon:true},
+    {title:"Visitor Log Request",steps:null,video:null,soon:true},
+    {title:"Walkthroughs",steps:null,video:null,soon:true},
+  ],
+  noc:[
+    {title:"Update the Daily NOC Task List",steps:"https://scribehow.com/viewer/How_to_update_the_daily_NOC_task_list__Mkc1VBW4SvWI20-dDJit6A",video:"https://scribehow.com/embed/How_to_update_the_daily_NOC_task_list__Mkc1VBW4SvWI20-dDJit6A?as=video"},
+    {title:"Level 1 Support | Escalation to Level 2",steps:"https://scribehow.com/viewer/Level_1_Support_or_Escalation_to_Level_2__tk1eWjAoS9y2NEvjRUO74A",video:"https://scribehow.com/embed/Level_1_Support_or_Escalation_to_Level_2__tk1eWjAoS9y2NEvjRUO74A?as=video"},
+    {title:"Creating a Support Ticket for Account Verification",steps:"https://scribehow.com/viewer/How_to_Submit_an_Internal_Support_Ticket_in_Ubersmith__lDPtOiYJTy6zuiPjNzg_TQ",video:null,soon:true},
+    {title:"How to Send General Responses for Level 1 Support",steps:"https://scribehow.com/viewer/Level_1_Support_or_General_Response__-0uu2LdOTLG-_lvzDpLNPw",video:null},
+  ],
+  hostbill:[
+    {title:"Setting Up Your Initial Environment",link:"https://cloudkey.atlassian.net/wiki/spaces/CKB/pages/63242252/Guidelines+for+setting+up+a+new+environment"},
+    {title:"Building a CloudKey Virtual Data Center",link:"https://cloudkey.atlassian.net/wiki/spaces/CKB/pages/3604481/Building+a+CloudKey+Virtual+Data+Center"},
+    {title:"Migrating Your Environment into CloudKey",link:"https://cloudkey.atlassian.net/wiki/spaces/CKB/pages/31752200/Migrating+Your+Environment+into+CloudKey"},
+    {title:"Common Issues",link:"https://cloudkey.atlassian.net/wiki/x/KgDNBQ"},
+    {title:"FAQ — New Account Sign Up Credit",link:"https://cloudkey.atlassian.net/wiki/x/CQDXCQ"},
+    {title:"How To Order New Services",link:"https://cloudkey.atlassian.net/wiki/x/FwD3"},
+    {title:"How to Modify Services in the CloudKey Portal",link:"https://cloudkey.atlassian.net/wiki/x/CID3"},
+    {title:"How to Apply a Promo / Discount Code",link:"https://cloudkey.atlassian.net/wiki/x/PgD-/"},
+    {title:"Accounts Marked as High Risk",link:"https://cloudkey.atlassian.net/wiki/x/74F3AQ"},
+    {title:"Tax Exemption with CloudKey",link:"https://cloudkey.atlassian.net/wiki/x/BoDOAQ"},
+    {title:"How To View Your CloudKey Invoice(s)",link:"https://cloudkey.atlassian.net/wiki/x/AYDS"},
+    {title:"How to Request Account Credit Card Change",link:"https://cloudkey.atlassian.net/wiki/x/BQDNBQ"},
+    {title:"Restrict IP Access for CloudKey Portal and/or Environment",link:"https://cloudkey.atlassian.net/wiki/x/VwDPAQ"},
+    {title:"Why Was My Account Deleted",link:"https://cloudkey.atlassian.net/wiki/x/BQAwCg"},
+    {title:"How To Add A New User In The CloudKey Portal",link:"https://cloudkey.atlassian.net/wiki/x/ZIDS"},
+    {title:"How To Delete a User In The CloudKey Portal",link:"https://cloudkey.atlassian.net/wiki/x/AQDg"},
+    {title:"How to Manage Users in the CloudKey Portal",link:"https://cloudkey.atlassian.net/wiki/x/HIDf"},
+    {title:"How to Assign a Billing Contact",link:"https://cloudkey.atlassian.net/wiki/x/GADg"},
+    {title:"How to Change Your Password on the CloudKey Portal",link:"https://cloudkey.atlassian.net/wiki/x/OQDg"},
+    {title:"How to Create a Support Ticket",link:"https://cloudkey.atlassian.net/wiki/x/BQD-/"},
+    {title:"How to Cancel a Service",link:"https://cloudkey.atlassian.net/wiki/x/_QDKAQ"},
+    {title:"How to Log In to Your CloudKey Environment (VCD)",link:"https://cloudkey.atlassian.net/wiki/x/XwD-/"},
+    {title:"How to Create a New vApp in Your CloudKey Environment (VCD)",link:"https://cloudkey.atlassian.net/wiki/x/FIAgAQ"},
+    {title:"How to Delete a vApp in Your CloudKey Environment (VCD)",link:"https://cloudkey.atlassian.net/wiki/x/DQApAQ"},
+    {title:"How to Open a VM Console in Your CloudKey Environment (VCD)",link:"https://cloudkey.atlassian.net/wiki/x/UQAlAQ"},
+    {title:"How to Start/Shutdown a VM in Your CloudKey Environment (VCD)",link:"https://cloudkey.atlassian.net/wiki/x/GAAiAQ"},
+    {title:"How to Suspend/Delete a VM in Your CloudKey Environment (VCD)",link:"https://cloudkey.atlassian.net/wiki/x/JAAkAQ"},
+    {title:"Enable and Update User Roles in Your vDC Environment",link:"https://cloudkey.atlassian.net/wiki/x/AQD9C"},
+    {title:"Linux Distro Network Configuration",link:"https://cloudkey.atlassian.net/wiki/x/voC5Bg"},
+    {title:"How to View Metrics and Reporting in CloudKey",link:"https://cloudkey.atlassian.net/wiki/x/AYCfBw"},
+    {title:"How to Create a Custom Catalog and Upload Custom Images",link:"https://cloudkey.atlassian.net/wiki/x/CYBxC"},
+  ]
+};
+
+const CATS = {
+  ubersmith:{label:'Ubersmith',icon:'🎫',color:'#1d6ae5'},
+  facilities:{label:'Facilities',icon:'🏢',color:'#0ea5a0'},
+  noc:{label:'NOC Dashboard',icon:'📡',color:'#7c3aed'},
+  hostbill:{label:'HostBill / CloudKey',icon:'☁️',color:'#16a34a'},
+};
+
+let currentTab = 'all';
+
+function makeCard(task) {
+  const soon = task.soon ? '<span class="badge-coming">coming soon</span>' : '';
+  let btns = '';
+  if (task.link) btns += `<a class="btn-link" href="${task.link}" target="_blank">🔗 Open Guide</a>`;
+  if (task.steps) btns += `<a class="btn-steps" href="${task.steps}" target="_blank">📋 Steps</a>`;
+  if (task.video) btns += `<a class="btn-video" href="${task.video}" target="_blank">▶ Video</a>`;
+  return `<div class="task-card" data-title="${task.title.toLowerCase()}">
+    <div class="task-card-title">${task.title}${soon}</div>
+    <div class="task-links">${btns || '<span style="font-size:12px;color:var(--text3)">Guide coming soon</span>'}</div>
+  </div>`;
+}
+
+function updateStats(cats) {
+  let total=0, ready=0, soon=0;
+  for (const cat of cats) {
+    for (const t of DATA[cat]) {
+      total++;
+      if (t.soon) soon++;
+      else ready++;
+    }
+  }
+  document.getElementById('stat-total').textContent = total;
+  document.getElementById('stat-ready').textContent = ready;
+  document.getElementById('stat-soon').textContent = soon;
+}
+
+function renderTab(tab) {
+  const content = document.getElementById('content');
+  const cats = tab === 'all' ? Object.keys(DATA) : [tab];
+  updateStats(cats);
+  let html = '';
+  for (const cat of cats) {
+    const c = CATS[cat];
+    const tasks = DATA[cat];
+    html += `<div class="cat-section" data-cat="${cat}">
+      <div class="cat-header">
+        <div class="cat-icon" style="background:${c.color}18">${c.icon}</div>
+        <span class="cat-label">${c.label}</span>
+        <span class="cat-count">${tasks.length} tasks</span>
+      </div>
+      <div class="section-grid">${tasks.map(makeCard).join('')}</div>
+    </div>`;
+  }
+  content.innerHTML = html;
+}
+
+function switchTab(tab, el) {
+  currentTab = tab;
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('search-input').value = '';
+  renderTab(tab);
+}
+
+function filterCards(q) {
+  q = q.toLowerCase().trim();
+  if (!q) { renderTab(currentTab); return; }
+  const content = document.getElementById('content');
+  const cats = currentTab === 'all' ? Object.keys(DATA) : [currentTab];
+  let html = '', total = 0;
+  for (const cat of cats) {
+    const c = CATS[cat];
+    const filtered = DATA[cat].filter(t => t.title.toLowerCase().includes(q));
+    if (!filtered.length) continue;
+    total += filtered.length;
+    html += `<div class="cat-section">
+      <div class="cat-header">
+        <div class="cat-icon" style="background:${c.color}18">${c.icon}</div>
+        <span class="cat-label">${c.label}</span>
+        <span class="cat-count">${filtered.length} results</span>
+      </div>
+      <div class="section-grid">${filtered.map(makeCard).join('')}</div>
+    </div>`;
+  }
+  content.innerHTML = html || `<div class="empty-state"><div class="icon">🔍</div><p>No procedures found for "<strong>${q}</strong>"</p><p style="margin-top:8px;font-size:13px">Try a different keyword or ask the AI Assistant</p></div>`;
+  document.getElementById('stat-total').textContent = total;
+}
+
+function toggleChat() {
+  const chat = document.getElementById('aiChat');
+  chat.classList.toggle('open');
+  if (chat.classList.contains('open')) {
+    setTimeout(() => document.getElementById('aiInput').focus(), 200);
+  }
+}
+
+function askSuggestion(el) {
+  document.getElementById('aiInput').value = el.textContent;
+  document.getElementById('aiSuggestions').style.display = 'none';
+  sendMsg();
+}
+
+const AI_CONTEXT = `You are an Infrastructure Help Center assistant for GIP Networks. You help staff find and follow procedures for:
+
+UBERSMITH: Opening internal/external tickets, modifying tickets, updating tickets, bandwidth reports, adding/removing authorized contacts, billable templates, phishing complaints, walkthrough tickets, linking/merging tickets.
+
+FACILITIES: Resetting CRAC compressor units, generator tests, UPS logs, ATS status checks, power audits, crossconnects, cabinet install/reclaim, check in/out procedures, conference room reservations, equipment removal, visitor logs, walkthroughs.
+
+NOC DASHBOARD: Daily NOC task list updates, Level 1 support escalation to Level 2, account verification tickets, general Level 1 response procedures.
+
+HOSTBILL / CLOUDKEY: Setting up environments, building virtual data centers, VM management (create/delete/start/shutdown/suspend vApps), user management (add/delete/manage users, assign billing contacts, change passwords), billing (invoices, credit card changes, promo codes, high-risk accounts, tax exemption), services (order/modify/cancel), security (restrict IP access), portal navigation (metrics, notifications, task logs, org settings).
+
+Be concise (under 100 words). Give clear step guidance. Tell users to click the Steps or Video button on the relevant task card. If a guide is "coming soon", acknowledge it and offer general guidance.`;
+
+let conversationHistory = [];
+
+async function sendMsg() {
+  const input = document.getElementById('aiInput');
+  const q = input.value.trim();
+  if (!q) return;
+  input.value = '';
+
+  document.getElementById('aiSuggestions').style.display = 'none';
+
+  const msgs = document.getElementById('aiMessages');
+  msgs.innerHTML += `<div class="msg user">${q}</div>`;
+  msgs.innerHTML += `<div class="msg typing" id="typing-indicator">Thinking…</div>`;
+  msgs.scrollTop = msgs.scrollHeight;
+
+  conversationHistory.push({role:'user', content: q});
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 300,
+        system: AI_CONTEXT,
+        messages: conversationHistory
+      })
+    });
+    const data = await res.json();
+    const reply = data.content?.[0]?.text || 'Sorry, I could not get a response. Please try again.';
+    conversationHistory.push({role:'assistant', content: reply});
+
+    const typingEl = document.getElementById('typing-indicator');
+    if (typingEl) typingEl.remove();
+    msgs.innerHTML += `<div class="msg bot">${reply}</div>`;
+  } catch(e) {
+    const typingEl = document.getElementById('typing-indicator');
+    if (typingEl) typingEl.remove();
+    msgs.innerHTML += `<div class="msg bot">Sorry, there was a connection error. Please try again.</div>`;
+  }
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+renderTab('all');
+
+// ── Google Sites iframe auto-resize ──────────────────────────────────────────
+// Sends the full document height to the parent frame every time content changes.
+// In Google Sites, set the embed height to "1px" — this script takes over.
+(function(){
+  function sendHeight(){
+    const h = document.documentElement.scrollHeight || document.body.scrollHeight;
+    window.parent.postMessage({type:'setHeight', height: h}, '*');
+  }
+  // Fire on load and whenever DOM changes (tab switches, search, AI responses)
+  window.addEventListener('load', sendHeight);
+  const observer = new MutationObserver(sendHeight);
+  observer.observe(document.body, {childList:true, subtree:true, attributes:false});
+  // Also poll every 500ms as a fallback for slow-loading fonts/images
+  setInterval(sendHeight, 500);
+})();
+</script>
+</body>
+</html>
